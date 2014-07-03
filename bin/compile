@@ -127,6 +127,18 @@ if [ ! -e $build_dir/Procfile ]; then
   fi
 fi
 
+# install sass
+status "Installing Sass"
+export GEM_HOME=$build_dir/.gem/ruby/1.9.1
+PATH="$GEM_HOME/bin:$PATH"
+if test -d $cache_dir/ruby/.gem; then
+  status "Restoring ruby gems directory from cache"
+  cp -r $cache_dir/ruby/.gem $build_dir
+  HOME=$build_dir gem update sass --user-install --no-rdoc --no-ri
+else
+  HOME=$build_dir gem install sass --user-install --no-rdoc --no-ri
+fi
+
 # Update the PATH
 status "Building runtime environment"
 mkdir -p $build_dir/.profile.d
